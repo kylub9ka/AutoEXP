@@ -1,0 +1,157 @@
+﻿<Window x:Class="AutoService.WPF.MasterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="AutoExp - Кабинет мастера" Height="800" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBackground}"
+        TextElement.FontFamily="Segoe UI"
+        Icon="logo.png">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{StaticResource CardBackground}" BorderBrush="{StaticResource BorderColor}" BorderThickness="0,0,0,1">
+            <Grid Margin="30,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Grid Width="60" Height="60" Margin="0,0,15,0">
+                        <Image Source="logo.png" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    </Grid>
+                    <TextBlock Text="Рабочее место мастера" FontSize="28" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="Выйти" Click="BtnLogout_Click" Style="{StaticResource NeonButton}" Width="100" Background="{StaticResource NeonPink}" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Style="{StaticResource GlassCard}" Padding="20" Margin="0,0,0,10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="🔔 Свободные заказы" FontSize="22" FontWeight="Bold" Foreground="{StaticResource NeonCyan}" Margin="0,0,0,5"/>
+                    <TextBlock Grid.Row="1" Text="Выберите заказ и нажмите «Взять», чтобы приступить к ремонту" FontSize="13" Foreground="{StaticResource TextDim}" Margin="0,0,0,15"/>
+
+                    <DataGrid x:Name="FreeOrdersGrid" Grid.Row="2" Style="{StaticResource ModernDataGrid}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="№" Binding="{Binding kod_zakaza}" Width="50"/>
+                            <DataGridTextColumn Header="Клиент" Binding="{Binding klient}" Width="1*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Автомобиль" Binding="{Binding avto}" Width="1.5*" Foreground="{StaticResource NeonCyan}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Услуга" Binding="{Binding usluga}" Width="2*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Цена" Binding="{Binding cena, StringFormat={}{0:N0} ₽}" Width="100" Foreground="{StaticResource NeonPink}" FontWeight="Bold"/>
+                            <DataGridTemplateColumn Header="Действие" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="BtnTakeOrder_Click" Cursor="Hand" ToolTip="Взять заказ" 
+                                                Width="80" Height="30" Background="#00FF88" BorderThickness="0">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                                        <TextBlock Text="Взять" Foreground="#12121A" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="20" Margin="0,10,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="🛠 Мои задачи в работе" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,5"/>
+                    <TextBlock Grid.Row="1" Text="Нажмите «Выполнено», когда работа будет завершена" FontSize="13" Foreground="{StaticResource TextDim}" Margin="0,0,0,15"/>
+
+                    <DataGrid x:Name="MyTasksGrid" Grid.Row="2" Style="{StaticResource ModernDataGrid}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="№" Binding="{Binding kod_zakaza}" Width="50"/>
+                            <DataGridTextColumn Header="Клиент" Binding="{Binding klient}" Width="1*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Автомобиль" Binding="{Binding avto}" Width="1.5*" Foreground="{StaticResource NeonCyan}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Услуга" Binding="{Binding usluga}" Width="2*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Цена" Binding="{Binding cena, StringFormat={}{0:N0} ₽}" Width="100" Foreground="{StaticResource NeonPink}" FontWeight="Bold"/>
+                            <DataGridTemplateColumn Header="Действие" Width="130">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="BtnComplete_Click" Cursor="Hand" ToolTip="Отметить как выполнено" 
+                                                Width="110" Height="30" Background="Transparent" BorderThickness="1" BorderBrush="#00FF88">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="Transparent" BorderBrush="#00FF88" BorderThickness="1" CornerRadius="6">
+                                                        <TextBlock Text="✓ Выполнено" Foreground="#00FF88" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

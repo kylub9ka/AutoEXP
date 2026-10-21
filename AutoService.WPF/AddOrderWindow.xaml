@@ -1,0 +1,54 @@
+﻿<Window x:Class="AutoService.WPF.AddOrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Новый заказ" Height="750" Width="500"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBackground}"
+        TextElement.FontFamily="Segoe UI"
+        ResizeMode="NoResize">
+
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="➕ Оформление заказа" FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,0,0,15"/>
+
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Клиент" Foreground="{StaticResource TextDim}" Margin="0,10,0,5"/>
+            <ComboBox x:Name="CbKlient" DisplayMemberPath="Name" SelectedValuePath="Id" Background="{StaticResource CardBackground}" Foreground="White" BorderBrush="{StaticResource BorderColor}" Padding="10" FontSize="16"/>
+
+            <TextBlock Text="Марка автомобиля" Foreground="{StaticResource TextDim}" Margin="0,10,0,5"/>
+            <TextBox x:Name="TbMarka" Background="{StaticResource CardBackground}" Foreground="White" BorderBrush="{StaticResource BorderColor}" Padding="10" FontSize="16" Text="Lada"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                    <TextBlock Text="Госномер" Foreground="{StaticResource TextDim}" Margin="0,10,0,5"/>
+                    <TextBox x:Name="TbGosnomer" Background="{StaticResource CardBackground}" Foreground="White" BorderBrush="{StaticResource BorderColor}" Padding="10" FontSize="16" Text="А123ВС76"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                    <TextBlock Text="Год выпуска" Foreground="{StaticResource TextDim}" Margin="0,10,0,5"/>
+                    <TextBox x:Name="TbGod" Background="{StaticResource CardBackground}" Foreground="White" BorderBrush="{StaticResource BorderColor}" Padding="10" FontSize="16" Text="2020"/>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Text="Цвет" Foreground="{StaticResource TextDim}" Margin="0,10,0,5"/>
+            <TextBox x:Name="TbCvet" Background="{StaticResource CardBackground}" Foreground="White" BorderBrush="{StaticResource BorderColor}" Padding="10" FontSize="16" Text="Белый"/>
+
+            <TextBlock Text="Услуги (зажмите Ctrl для выбора нескольких)" Foreground="{StaticResource TextDim}" Margin="0,10,0,5"/>
+            <ListBox x:Name="LbUslugi" DisplayMemberPath="Name" SelectionMode="Multiple" Background="{StaticResource CardBackground}" Foreground="White" BorderBrush="{StaticResource BorderColor}" Padding="5" Height="100" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Стоимость одной услуги (руб)" Foreground="{StaticResource TextDim}" Margin="0,5,0,5"/>
+            <TextBox x:Name="TbCost" Background="{StaticResource CardBackground}" Foreground="{StaticResource NeonCyan}" BorderBrush="{StaticResource NeonCyan}" Padding="10" FontSize="18" FontWeight="Bold" Text="2500" Margin="0,0,0,10"/>
+        </StackPanel>
+
+        <Button Grid.Row="2" Content="Сохранить заказы" Click="BtnSave_Click" 
+                Style="{StaticResource NeonButton}" Height="50" Margin="0,10,0,0"/>
+    </Grid>
+</Window>

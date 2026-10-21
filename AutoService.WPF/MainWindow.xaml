@@ -1,0 +1,345 @@
+﻿<Window x:Class="AutoService.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="AutoExp PRO" Height="750" Width="1250"
+        TextElement.FontFamily="Segoe UI"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBackground}"
+        Icon="logo.png">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="#0A0A0F" BorderBrush="{StaticResource BorderColor}" BorderThickness="0,0,1,0">
+            <StackPanel>
+                <Grid Height="90" Margin="0,20,0,20">
+                    <Image Source="logo.png" Width="180" Height="180" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <TextBlock Text="AutoExp" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                <ListBox x:Name="MenuList" Background="Transparent" BorderThickness="0" Margin="10,0" SelectionChanged="MenuList_SelectionChanged">
+                    <ListBox.Resources>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Foreground" Value="{StaticResource TextDim}"/>
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="Padding" Value="15,12"/>
+                            <Setter Property="Margin" Value="0,5"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="Bd" Background="Transparent" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Bd" Property="Background" Value="#1E1E28"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Bd" Property="Background" Value="#1E1E28"/>
+                                                <Setter Property="Foreground" Value="{StaticResource NeonCyan}"/>
+                                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource NeonCyan}"/>
+                                                <Setter TargetName="Bd" Property="BorderThickness" Value="2,0,0,0"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.Resources>
+                    <ListBoxItem Content="📊 Дашборд" IsSelected="True"/>
+                    <ListBoxItem Content="📋 Заказы"/>
+                    <ListBoxItem Content="👥 Клиенты"/>
+                    <ListBoxItem Content="🔧 Мастера"/>
+                    <ListBoxItem Content="🎁 Акции"/>
+                    <ListBoxItem Content="⚙️ Настройки"/>
+                </ListBox>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Column="1" Margin="30">
+          <Grid x:Name="GridDashboard" Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Margin="0,0,0,25">
+                    <StackPanel>
+                        <TextBlock Text="Панель управления" FontSize="32" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock Text="Статистика автосервиса в реальном времени" FontSize="14" Foreground="{StaticResource TextDim}" Margin="0,5,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Content="Выйти" Click="BtnLogout_Click" Style="{StaticResource NeonButton}" Width="100" Background="{StaticResource NeonPink}" Foreground="White"/>
+                    </StackPanel>
+                </Grid>
+                <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,25">
+                    <Border Style="{StaticResource GlassCard}">
+                        <Grid Margin="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#00E5FF22" CornerRadius="12" Width="60" Height="60">
+                                <TextBlock Text="📋" FontSize="28" Foreground="{StaticResource NeonCyan}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="Всего заказов" FontSize="14" Foreground="{StaticResource TextDim}"/>
+                                <TextBlock Text="{Binding TotalOrders}" FontSize="32" FontWeight="Bold" Foreground="White"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource GlassCard}">
+                        <Grid Margin="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#FF408122" CornerRadius="12" Width="60" Height="60">
+                                <TextBlock Text="💰" FontSize="28" Foreground="{StaticResource NeonPink}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="Выручка" FontSize="14" Foreground="{StaticResource TextDim}"/>
+                                <TextBlock Text="{Binding TotalRevenue, StringFormat={}{0:N0} ₽}" FontSize="28" FontWeight="Bold" Foreground="{StaticResource NeonPink}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource GlassCard}">
+                        <Grid Margin="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#00FF8822" CornerRadius="12" Width="60" Height="60">
+                                <TextBlock Text="✅" FontSize="28" Foreground="#00FF88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="Выполнено" FontSize="14" Foreground="{StaticResource TextDim}"/>
+                                <TextBlock Text="{Binding CompletedOrders}" FontSize="32" FontWeight="Bold" Foreground="#00FF88"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </UniformGrid>
+                <Border Grid.Row="2" Style="{StaticResource GlassCard}" Padding="15">
+                    <DataGrid Style="{StaticResource ModernDataGrid}" ItemsSource="{Binding Orders}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="№" Binding="{Binding kod_zakaza}" Width="60" Foreground="{StaticResource TextDim}"/>
+                            <DataGridTextColumn Header="Клиент" Binding="{Binding klient}" Width="*" FontWeight="SemiBold"/>
+                            <DataGridTextColumn Header="Авто" Binding="{Binding avto}" Width="*"/>
+                            <DataGridTextColumn Header="Услуга" Binding="{Binding usluga}" Width="*"/>
+                            <DataGridTextColumn Header="Стоимость" Binding="{Binding cena, StringFormat={}{0:N0} ₽}" Width="120" Foreground="{StaticResource NeonCyan}" FontWeight="Bold"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </Grid>
+
+            <Grid x:Name="GridOrders" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Margin="0,0,0,25">
+                    <StackPanel>
+                        <TextBlock Text="Управление заказами" FontSize="32" FontWeight="Bold" Foreground="White"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <StackPanel Margin="0,0,20,0">
+                            <TextBlock Text="Поиск по клиенту" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,0,0,2"/>
+                            <TextBox x:Name="TbSearch" Width="200" Height="35" VerticalContentAlignment="Center" Background="{StaticResource CardBackground}" Foreground="White" BorderBrush="{StaticResource BorderColor}" Padding="10,0" TextChanged="TbSearch_TextChanged"/>
+                        </StackPanel>
+                        <Button Click="BtnAdd_Click" Style="{StaticResource NeonButton}" Width="180" Margin="0,0,10,0" Background="{StaticResource NeonPink}" Foreground="White">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="➕" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Добавить" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Click="BtnUpdate_Click" Style="{StaticResource NeonButton}" Width="160">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🔄" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Обновить" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="15">
+                    <DataGrid Style="{StaticResource ModernDataGrid}" ItemsSource="{Binding Orders}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="№" Binding="{Binding kod_zakaza}" Width="60" Foreground="{StaticResource TextDim}"/>
+                            <DataGridTextColumn Header="Клиент" Binding="{Binding klient}" Width="*" FontWeight="SemiBold"/>
+                            <DataGridTextColumn Header="Автомобиль" Binding="{Binding avto}" Width="*"/>
+                            <DataGridTextColumn Header="Услуга" Binding="{Binding usluga}" Width="*"/>
+                            <DataGridTextColumn Header="Стоимость" Binding="{Binding cena, StringFormat={}{0:N0} ₽}" Width="120" Foreground="{StaticResource NeonCyan}" FontWeight="Bold"/>
+                            <DataGridTemplateColumn Header="Статус" Width="130">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="10" Padding="10,5" HorizontalAlignment="Center">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="#333333"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding status}" Value="В работе">
+                                                            <Setter Property="Background" Value="#FFA50033"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding status}" Value="Выполнен">
+                                                            <Setter Property="Background" Value="#00FF8833"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <TextBlock Text="{Binding status}" FontSize="12" FontWeight="Bold">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="#AAAAAA"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding status}" Value="В работе">
+                                                                <Setter Property="Foreground" Value="#FFA500"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding status}" Value="Выполнен">
+                                                                <Setter Property="Foreground" Value="#00FF88"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style></TextBlock>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Действия" Width="120">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Button Click="BtnComplete_Click" Cursor="Hand" ToolTip="Отметить как выполнено" Width="35" Height="35" Margin="0,0,10,0" Background="Transparent" BorderThickness="1" BorderBrush="#00FF88">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="Transparent" BorderBrush="#00FF88" BorderThickness="1" CornerRadius="6">
+                                                            <TextBlock Text="✓" Foreground="#00FF88" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                            <Button Click="BtnDelete_Click" Cursor="Hand" ToolTip="Удалить заказ" Width="35" Height="35" Background="Transparent" BorderThickness="1" BorderBrush="#FF4081">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="Transparent" BorderBrush="#FF4081" BorderThickness="1" CornerRadius="6">
+                                                            <TextBlock Text="✕" Foreground="#FF4081" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </Grid>
+            <Grid x:Name="GridClients" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Margin="0,0,0,25">
+                    <TextBlock Text="База клиентов" FontSize="32" FontWeight="Bold" Foreground="White"/>
+                </StackPanel>
+                <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="15">
+                    <DataGrid x:Name="ClientsGrid" Style="{StaticResource ModernDataGrid}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding kod}" Width="80" Foreground="{StaticResource TextDim}"/>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding fio}" Width="*" FontWeight="SemiBold"/>
+                            <DataGridTextColumn Header="Телефон" Binding="{Binding telefon}" Width="*" Foreground="{StaticResource NeonCyan}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </Grid>
+
+            <Grid x:Name="GridMasters" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Margin="0,0,0,25">
+                    <TextBlock Text="Управление мастерами" FontSize="32" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <StackPanel Margin="0,0,10,0">
+                            <TextBlock Text="ФИО мастера" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,0,0,2"/>
+                            <TextBox x:Name="TbMasterFio" Width="150" Height="35" Background="{StaticResource CardBackground}" Foreground="White" Padding="5"/>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,10,0">
+                            <TextBlock Text="Специальность" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,0,0,2"/>
+                            <TextBox x:Name="TbMasterSpec" Width="150" Height="35" Background="{StaticResource CardBackground}" Foreground="White" Padding="5"/>
+                        </StackPanel>
+                        <Button Content="➕ Нанять" Click="BtnAddMaster_Click" Style="{StaticResource NeonButton}" Width="120" Height="35"/>
+                    </StackPanel>
+                </Grid>
+                <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="15">
+                    <DataGrid x:Name="AdminMastersGrid" Style="{StaticResource ModernDataGrid}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding kod}" Width="60"/>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding fio}" Width="*"/>
+                            <DataGridTextColumn Header="Специальность" Binding="{Binding spec}" Width="*"/>
+                            <DataGridTemplateColumn Header="Действия" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="❌ Уволить" Click="BtnDeleteMaster_Click" Background="Transparent" BorderThickness="0" Foreground="{StaticResource NeonPink}" FontWeight="Bold" Cursor="Hand"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </Grid>
+            <Grid x:Name="GridPromotions" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Margin="0,0,0,25">
+                    <TextBlock Text="Управление акциями" FontSize="32" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <StackPanel Margin="0,0,10,0">
+                            <TextBlock Text="Название акции" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,0,0,2"/>
+                            <TextBox x:Name="TbPromoTitle" Width="150" Height="35" Background="{StaticResource CardBackground}" Foreground="White" Padding="5"/>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,10,0">
+                            <TextBlock Text="Описание" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,0,0,2"/>
+                            <TextBox x:Name="TbPromoDesc" Width="200" Height="35" Background="{StaticResource CardBackground}" Foreground="White" Padding="5"/>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,10,0">
+                            <TextBlock Text="Скидка %" Foreground="{StaticResource TextDim}" FontSize="11" Margin="0,0,0,2"/>
+                            <TextBox x:Name="TbPromoDiscount" Width="60" Height="35" Background="{StaticResource CardBackground}" Foreground="White" Padding="5" Text="10"/>
+                        </StackPanel>
+                        <Button Content="➕ Добавить" Click="BtnAddPromo_Click" Style="{StaticResource NeonButton}" Width="130" Height="35"/>
+                    </StackPanel>
+                </Grid>
+                <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="15">
+                    <DataGrid x:Name="AdminPromosGrid" Style="{StaticResource ModernDataGrid}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding id}" Width="60"/>
+                            <DataGridTextColumn Header="Заголовок" Binding="{Binding title}" Width="*"/>
+                            <DataGridTextColumn Header="Описание" Binding="{Binding desc}" Width="2*"/>
+                            <DataGridTextColumn Header="Скидка %" Binding="{Binding discount}" Width="100" Foreground="{StaticResource NeonPink}"/>
+                            <DataGridTemplateColumn Header="Действия" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="❌ Удалить" Click="BtnDeletePromo_Click" Background="Transparent" BorderThickness="0" Foreground="{StaticResource NeonPink}" FontWeight="Bold" Cursor="Hand"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </Grid>
+
+            <Grid x:Name="GridSettings" Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="⚙️" FontSize="80" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                    <TextBlock Text="Настройки системы" FontSize="32" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
